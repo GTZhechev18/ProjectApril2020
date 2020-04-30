@@ -12,7 +12,7 @@ struct Deposit{
 	float amount;
 };
 
-//auxilliary function, returning the last present number of the depositor
+//auxilliary function, returning the last present number of the depositor +1
 int last_num_depositors(Deposit arr[], int num_dep) 
 { if (num_dep==0) return 1;
   int max_num=0;
@@ -58,7 +58,7 @@ void input_depositor(Deposit arr[], int& num_dep)
  num_dep++; 
 }
 
-void view(Deposit arr[], int& num_dep)             // List of depositors
+void view(Deposit arr[], int num_dep)             // List of depositors
 {
   system("cls");
   if (num_dep==0) { cout<<"\nNo Depositors!\n";
@@ -73,7 +73,7 @@ void view(Deposit arr[], int& num_dep)             // List of depositors
  
 }
 
-//search for a depositor with certain currency
+//search for a depositor with certain currency deposit
 
 int find_depositor_currency(Deposit arr[], int num_dep, int depositor, string money)
 {
@@ -105,11 +105,14 @@ void input_deposit(Deposit arr[], int& num_dep)
   cin>>currency;
   cout<<"Enter amount: ";
   cin>>amount;
+  if (amount<=0) { cout<<"\n The amount should be a positive number!\n";
+                 return; 
+                }
   
   string smoney=scurrency(currency);
   int index1=find_depositor_currency(arr,num_dep,num,smoney);
-  if (index1>=0) arr[index1].amount=arr[index1].amount+amount;
-   else { arr[num_dep].number=num;
+  if (index1>=0) arr[index1].amount=arr[index1].amount+amount; //add the amount to the current deposit
+   else { arr[num_dep].number=num;                             // add a new deposit to an existing depositor
           arr[num_dep].name=arr[index].name;
           arr[num_dep].family=arr[index].family;
    	      arr[num_dep].currency=smoney;
@@ -142,6 +145,9 @@ void withdraw_deposit(Deposit arr[], int& num_dep)
   
   cout<<"Enter amount: ";
   cin>>amount;
+  if (amount<=0) { cout<<"\n The amount should be a positive number!\n";
+                 return; 
+                }
   if (amount>arr[index1].amount) { cout<<"\n No enough amount!\n";
                                    return; 
                                  }
@@ -158,7 +164,7 @@ void withdraw_deposit(Deposit arr[], int& num_dep)
   }
 }
 
-
+//Main menu
 void show_menu(Deposit arr[], int& num_dep)
 { 
   int c;
@@ -173,6 +179,7 @@ void show_menu(Deposit arr[], int& num_dep)
   cout<<"6 - Quit program\n";
   cout<<"Your choice:";
   cin>>c;
+  
   switch(c){
   	 case 1: input_depositor(arr, num_dep); break;
   	 case 2: int n;
@@ -183,8 +190,7 @@ void show_menu(Deposit arr[], int& num_dep)
   	 case 3: view(arr, num_dep); break;
   	 case 4: input_deposit(arr, num_dep); break;
   	 case 5: withdraw_deposit(arr, num_dep); break;
-  	 default: "Error! Try again!";
-  }
+  	}
   } while (c!=6);
 }
 
@@ -195,14 +201,6 @@ int main()	//main function
   
  show_menu(arr, num_dep);
    
-  cout<<"\nEnd of program";
+ cout<<"\nEnd of program!";
 }
-
-
-void swap_deposits(Deposit& a, Deposit& b)
-{ Deposit temp=a;
-  a=b;
-  b=temp;
-}
-
 
